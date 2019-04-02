@@ -1,7 +1,7 @@
-import React from "react";
-import { MdInsertDriveFile, MdFolder } from "react-icons/md";
-import { withRouter } from "react-router";
-import PropTypes from "prop-types";
+import React from 'react'
+import { MdInsertDriveFile, MdFolder } from 'react-icons/md'
+import { withRouter } from 'react-router'
+import PropTypes from 'prop-types'
 
 class Tree extends React.Component {
   static propsTypes = {
@@ -13,42 +13,40 @@ class Tree extends React.Component {
         folderId: PropTypes.any
       })
     )
-  };
+  }
 
   preview = file => {
-    if (file.type === "folder") {
-      this.props.history.push(`/folders/${file.folderId}`);
+    if (file.type === 'folder') {
+      this.props.history.push(`/folders/${file.folderId}`)
     } else {
-      console.log(file);
+      console.log(file)
     }
-  };
+  }
 
-  render() {
+  render () {
     return (
-      <div className="Box">
-        <div className="Box-header">
-          <h3 className="Box-title">File Name</h3>
+      <div className='Box'>
+        <div className='Box-header'>
+          <h3 className='Box-title'>File Name</h3>
         </div>
         {this.props.files.map((file, index) => (
           <div
             key={file.name.toString()}
             style={{
-              display: "flex"
+              display: 'flex'
             }}
-            className={index === file.length ? "Box-body" : "Box-footer"}
-          >
-            {file.type === "folder" ? <MdFolder /> : <MdInsertDriveFile />}
+            className={index === file.length ? 'Box-body' : 'Box-footer'}>
+            {file.type === 'folder' ? <MdFolder /> : <MdInsertDriveFile />}
             <div
-              style={{ paddingLeft: "5px" }}
-              onClick={() => this.preview(file)}
-            >
+              style={{ paddingLeft: '5px' }}
+              onClick={() => this.preview(file)}>
               {file.name}
             </div>
           </div>
         ))}
       </div>
-    );
+    )
   }
 }
 
-export default withRouter(Tree);
+export default withRouter(Tree)
