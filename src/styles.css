@@ -1,0 +1,36 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+.Box {
+  background-color: #fff;
+  border: 1px solid #d1d5da;
+  border-radius: 3px;
+}
+
+.Box-header {
+  padding: 1px 12px;
+  margin: -1px -1px 0;
+  background-color: #f6f8fa;
+  border: 1px solid #d1d5da;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  cursor: pointer;
+}
+
+.Box-body {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.Box-footer {
+  cursor: pointer;
+  padding: 10px 12px;
+  margin-top: -1px;
+  border-top: 1px solid #e1e4e8;
+}
+
+.Box-title {
+  font-size: 14px;
+  font-weight: 600;
+}
