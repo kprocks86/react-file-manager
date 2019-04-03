@@ -17,7 +17,7 @@ class Tree extends React.Component {
 
   preview = file => {
     if (file.type === 'folder') {
-      this.props.history.push(`/folders/${file.folderId}`)
+      this.props.history.push(`/drive/folders/${file.folderId}`)
     } else {
       console.log(file)
     }
