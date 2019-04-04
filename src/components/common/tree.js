@@ -1,9 +1,18 @@
-import React from 'react'
-import { MdInsertDriveFile, MdFolder } from 'react-icons/md'
+import React, { useState } from 'react'
+import { MdAddCircleOutline } from 'react-icons/md'
 import { withRouter } from 'react-router'
 import PropTypes from 'prop-types'
+import Item from '../item'
 
 class Tree extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      addFolder: {}
+    }
+    this.inputRef = React.createRef()
+  }
+
   static propsTypes = {
     files: PropTypes.arrayOf(
       PropTypes.shape({
@@ -15,12 +24,21 @@ class Tree extends React.Component {
     )
   }
 
-  preview = file => {
-    if (file.type === 'folder') {
-      this.props.history.push(`/drive/folders/${file.folderId}`)
-    } else {
-      console.log(file)
+  preview = ({ type, folderId }) => {
+    if (type === 'folder') {
+      this.props.history.push(`/drive/folders/${folderId}`)
     }
+  }
+
+  _addNewItem = e => {
+    this.setState({
+      addFolder: {
+        name: '',
+        size: null,
+        type: 'folder',
+        reference: this.inputRef
+      }
+    })
   }
 
   render () {
@@ -28,21 +46,17 @@ class Tree extends React.Component {
       <div className='Box'>
         <div className='Box-header'>
           <h3 className='Box-title'>File Name</h3>
+          <div style={{ alignSelf: 'center' }}>
+            <MdAddCircleOutline onClick={this._addNewItem} />
+          </div>
         </div>
         {this.props.files.map((file, index) => (
-          <div
-            key={file.name.toString()}
-            style={{
-              display: 'flex'
-            }}
-            className={index === file.length ? 'Box-body' : 'Box-footer'}>
-            {file.type === 'folder' ? <MdFolder /> : <MdInsertDriveFile />}
-            <div
-              style={{ paddingLeft: '5px' }}
-              onClick={() => this.preview(file)}>
-              {file.name}
-            </div>
-          </div>
+          <Item
+            {...file}
+            key={file.name}
+            index={index}
+            preview={this.preview}
+          />
         ))}
       </div>
     )
@@ -50,3 +64,17 @@ class Tree extends React.Component {
 }
 
 export default withRouter(Tree)
+
+const AddNewFolder = reference => {
+  const [folderName, setName] = useState('')
+  return (
+    <div
+      ref={reference}
+      style={{
+        display: 'flex'
+      }}
+      className='Box-body'>
+      <input value={folderName} onChange={e => setName(e.target.value)} />
+    </div>
+  )
+}
