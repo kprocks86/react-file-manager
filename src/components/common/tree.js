@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { withRouter } from 'react-router'
 import PropTypes from 'prop-types'
 import Item from '../item'
-
+import AddNewFolder from '../newFolder'
+const initState = {
+  addedFolders: [],
+  isNew: false
+}
 class Tree extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      addFolder: {}
+      ...initState
     }
     this.inputRef = React.createRef()
   }
@@ -30,14 +34,24 @@ class Tree extends React.Component {
     }
   }
 
+  _close = () => {
+    this.setState({ isNew: false })
+  }
+
   _addNewItem = e => {
+    this.setState({ isNew: true })
+  }
+
+  _createNew = name => {
     this.setState({
-      addFolder: {
-        name: '',
-        size: null,
-        type: 'folder',
-        reference: this.inputRef
-      }
+      addedFolders: [
+        ...this.state.addedFolders,
+        {
+          type: 'folder',
+          name
+        }
+      ],
+      isNew: false
     })
   }
 
@@ -46,10 +60,21 @@ class Tree extends React.Component {
       <div className='Box'>
         <div className='Box-header'>
           <h3 className='Box-title'>File Name</h3>
-          <div style={{ alignSelf: 'center' }}>
+          <div style={{ alignSelf: 'center', paddingLeft: '10px' }}>
             <MdAddCircleOutline onClick={this._addNewItem} />
           </div>
         </div>
+        {this.state.isNew && (
+          <AddNewFolder close={this._close} enter={this._createNew} />
+        )}
+        {this.state.addedFolders.map((newFolder, index) => (
+          <Item
+            {...newFolder}
+            key={newFolder.name}
+            index={index}
+            preview={this.preview}
+          />
+        ))}
         {this.props.files.map((file, index) => (
           <Item
             {...file}
@@ -64,17 +89,3 @@ class Tree extends React.Component {
 }
 
 export default withRouter(Tree)
-
-const AddNewFolder = reference => {
-  const [folderName, setName] = useState('')
-  return (
-    <div
-      ref={reference}
-      style={{
-        display: 'flex'
-      }}
-      className='Box-body'>
-      <input value={folderName} onChange={e => setName(e.target.value)} />
-    </div>
-  )
-}
